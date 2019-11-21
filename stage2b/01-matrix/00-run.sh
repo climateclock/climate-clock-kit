@@ -1,6 +1,23 @@
 #!/bin/bash -e
 
-#rm -f "${ROOTFS_DIR}/etc/systemd/system/dhcpcd.service.d/wait.conf"
+cp files/climateclock.py "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/climateclock.py"
+
+cat >"${ROOTFS_DIR}/etc/systemd/system/climateclock.service" <<EOF
+[Unit]
+Description=CLIMATECLOCK LED Matrix driver
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/home/${FIRST_USER_NAME}/climateclock.py
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+ln -sv /etc/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/multi-user.target.wants/climateclock.service"
+
+
 on_chroot << EOF
     cd "/home/${FIRST_USER_NAME}"
 
