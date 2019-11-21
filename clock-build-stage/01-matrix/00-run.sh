@@ -23,7 +23,7 @@ ln -fsv /etc/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/syst
 
 
 # Build and install the python library from within the emulated target system
-#  The PATH within this environment seems incorrect
+# NOTE: It's not clear why some binaries need full paths in this environment
 on_chroot << EOF
     echo "Adding rpi-rgb-led-matrix python library..."
     cd "/home/${FIRST_USER_NAME}"
@@ -35,15 +35,22 @@ on_chroot << EOF
 
     make build-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/usr/bin/python3
     make install-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/usr/bin/python3
+EOF
 
-
+# Replicate the steps for configuring the RTC from rgb-matrix.sh here:
+# https://github.com/adafruit/Raspberry-Pi-Installer-Scripts/blob/master/rgb-matrix.sh
+on_chroot << EOF
     echo "Configuring realtime clock..."
+
+    # I believe the net effect of this command (on a fresh system) is to:
+    #   * Add "i2c-dev" to /etc/modules
+    #   * Add "dtparam=i2c_arm" to /boot/config.txt
     /usr/bin/raspi-config nonint do_i2c 0
 
-    echo "# Enable HAT RTC" >> /boot/config.txt
-    echo "dtoverlay=i2c-rtc,ds1307" >> /boot/config.txt
+    # Do additional RTC setup for DS1307
+    printf "\n# For RGB Matrix HAT w/RTC" >> /boot/config.txt
+    printf "dtoverlay=i2c-rtc,ds1307" >> /boot/config.txt
 
-    update-rc.d -f fake-hwclock remove || true
-    apt-get -y remove fake-hwclock
+    # Comment out line which causes hwclock-set to exit when systemd is running
     sed -i '/if \[ -e \/run\/systemd\/system \] ; then/,+2 s/^#*/#/' /lib/udev/hwclock-set
 EOF
