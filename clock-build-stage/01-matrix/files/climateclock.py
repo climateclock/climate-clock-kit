@@ -3,7 +3,8 @@
 import time
 import datetime
 
-while not time.sleep(5):
+while not time.sleep(1):
     print('Tick')
     with open("/tmp/clock.text", "w") as f:
         f.write(str(datetime.datetime.now()))
+
