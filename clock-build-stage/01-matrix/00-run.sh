@@ -48,8 +48,8 @@ on_chroot << EOF
     /usr/bin/raspi-config nonint do_i2c 0
 
     # Do additional RTC setup for DS1307
-    printf "\n# For RGB Matrix HAT w/RTC" >> /boot/config.txt
-    printf "dtoverlay=i2c-rtc,ds1307" >> /boot/config.txt
+    printf "\n# For RGB Matrix HAT RTC\n" >> /boot/config.txt
+    printf "dtoverlay=i2c-rtc,ds1307\n" >> /boot/config.txt
 
     # Comment out line which causes hwclock-set to exit when systemd is running
     sed -i '/if \[ -e \/run\/systemd\/system \] ; then/,+2 s/^#*/#/' /lib/udev/hwclock-set
