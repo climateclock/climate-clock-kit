@@ -1,20 +1,22 @@
 #!/bin/bash
 
-# Ensure we're running in the directory of the top-level repo
+# Ensure we're running commands from the directory containing this script
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
+
 # Start with a pristine pi-gen repo
-SUBMOD=pi-gen
 git submodule init
 git submodule update
-cd $SUBMOD
-[ "$(basename $PWD)" = "$SUBMOD" ] || exit 1
+cd pi-gen
+[ "$(basename $PWD)" = "pi-gen" ] || exit 1
+echo "Cleaning pi-gen repo..."
 git clean -fdx
 
 # Add config, build stage, and remove stage2 (raspbian-lite) image generation
 cp -a ../{config,clock-build-stage} .
-rm stage2/EXPORT_{IMAGE,NOOBS}
+rm stage2/EXPORT_{IMAGE,NOOBS} 2>/dev/null
+
 
 
 # Remove build-breaking fake-hwclock from stage2 and image generation
@@ -23,6 +25,7 @@ sed -i '/-x.*fake-hwclock/,+2d' export-image/04-finalise/01-run.sh
 
 # Workaround for 64-bit hosts https://github.com/RPi-Distro/pi-gen/issues/271
 sed -i 's|FROM debian|FROM i386/debian|' Dockerfile
+
 
 
 # Build or resume partial build
