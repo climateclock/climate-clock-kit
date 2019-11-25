@@ -4,6 +4,13 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
+# Get a password
+if ! grep -q "^\s*FIRST_USER_PASS=.\+" config; then
+    read -p "Enter a password for the system being built: " PASSWORD
+    echo "FIRST_USER_PASS=$PASSWORD" >>config
+fi
+
+
 # Start with a pristine pi-gen repo
 git submodule init
 git submodule update
