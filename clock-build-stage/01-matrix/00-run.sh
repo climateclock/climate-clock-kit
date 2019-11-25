@@ -3,6 +3,7 @@
 # Copy the clock script to the user's home directory
 echo "Adding climateclock script to ${FIRST_USER_NAME}'s home directory..."
 install -v -o 1000 -g 1000 files/climateclock.py "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/climateclock.py"
+install -v -o 1000 -g 1000 files/9x18B.bdf "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/9x18B.bdf
 
 
 # Produce a systemd service and enable it for the multi-user target
