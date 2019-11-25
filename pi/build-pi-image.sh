@@ -31,5 +31,5 @@ sed -i 's|FROM debian|FROM i386/debian|' Dockerfile
 read -p "Keep docker container after build (requires manual clean-up)? [y/N]: " KEEP
 [ "$KEEP" = "y" ] && CLEAN=1 || CLEAN=0
 CONTINUE=1 PRESERVE_CONTAINER=$CLEAN ./build-docker.sh
-echo "If your image was built successfully, it will be in the deploy folder."
+echo "If your image was built successfully, it will be in ${PWD}/deploy."
 

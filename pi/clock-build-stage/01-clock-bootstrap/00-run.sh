@@ -5,7 +5,7 @@
 echo "Adding climateclock systemd service..."
 cat >"${ROOTFS_DIR}/home/${FIRST_USER_NAME}/climateclock.service" <<EOF
 [Unit]
-Description=CLIMATECLOCK LED Matrix driver
+Description=CLIMATECLOCK automatic startup service
 
 [Service]
 Type=simple
