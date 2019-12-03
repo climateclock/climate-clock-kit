@@ -21,7 +21,7 @@ START_EMISSIONS_YEARLY = 4.2e10
 
 
 relpath = lambda filename: os.path.join(sys.path[0], filename)
-hex2rgb = lambda x: (int(x[-6:-4], 16), int(x[-4:-2], 16), int(x[-2:], 16))
+hex2color = lambda x: graphics.Color(int(x[-6:-4], 16), int(x[-4:-2], 16), int(x[-2:], 16))
 
 
 def time_and_budget():
@@ -39,14 +39,14 @@ def time_and_budget():
 
 
 def run(options):
-    matrix = RGBMatrix(options)
+    matrix = RGBMatrix(options=options)
     canvas = matrix.CreateFrameCanvas()
 
     font = graphics.Font()
     font.LoadFont(relpath(FONT))
 
-    time_color = hex2rgb(TIME_COLOR)
-    co2_color = hex2rgb(CO2_COLOR)
+    time_color = hex2color(TIME_COLOR)
+    co2_color = hex2color(CO2_COLOR)
 
     while not time.sleep(.25):
         time_remaining, emissions_budget = time_and_budget()
@@ -71,7 +71,7 @@ options = RGBMatrixOptions()
 options.rows = 32
 options.cols = 64
 options.chain_length = 3
-options.gpio_slowdown = (0, 1, 2, 3)[1]
+options.gpio_slowdown = (0, 1, 2, 3)[2]
 # These may be preconfigured in the rgbmatrix library
 options.hardware_mapping = 'adafruit-hat' 
 options.disable_hardware_pulsing = True
