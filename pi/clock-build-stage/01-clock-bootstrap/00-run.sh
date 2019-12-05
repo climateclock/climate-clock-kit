@@ -3,7 +3,7 @@
 
 # Produce a systemd service and enable it for the multi-user target
 echo "Adding climateclock systemd service..."
-cat >"${ROOTFS_DIR}/home/${FIRST_USER_NAME}/climateclock.service" <<EOF
+cat >"${ROOTFS_DIR}/lib/systemd/system/climateclock.service" <<EOF
 [Unit]
 Description=CLIMATECLOCK automatic startup service
 
@@ -15,7 +15,7 @@ ExecStart=/home/${FIRST_USER_NAME}/climateclock.py
 [Install]
 WantedBy=multi-user.target
 EOF
-ln -fsv /home/${FIRST_USER_NAME}/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/multi-user.target.wants/climateclock.service"
+ln -fsv /lib/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/multi-user.target.wants/climateclock.service"
 
 
 # Build and install the python library from within the emulated target system
