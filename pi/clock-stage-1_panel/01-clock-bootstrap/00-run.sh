@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
 
+# Reduce DHCP timeout so system can boot faster
+printf "\n# Faster booting when network isn't present\ntimeout 5\n" >>"${ROOTFS_DIR}/etc/dhcpcd.conf"
+
+
 # Produce a systemd service and enable it for the multi-user target
 echo "Adding climateclock systemd service..."
 cat >"${ROOTFS_DIR}/lib/systemd/system/climateclock.service" <<EOF
