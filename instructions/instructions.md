@@ -1,8 +1,29 @@
-1. [Assemble the RGB Matrix HAT](#assemble-the-rgb-matrix-hat)
-2. [Attach the HAT and battery](#attach-the-hat-and-battery)
-3. [Attach the RGB Matrix panels](#attach-the-rgb-matrix-panels)
-4. [Prepare the software](#prepare-the-software)
-5. [Try it out](#try-it-out)
+# Make a CLIMATECLOCK
+
+1. [Gather materials](#gather-materials)
+2. [Assemble the RGB Matrix HAT](#assemble-the-rgb-matrix-hat)
+3. [Attach the HAT and battery](#attach-the-hat-and-battery)
+4. [Attach the RGB Matrix panels](#attach-the-rgb-matrix-panels)
+5. [Prepare the software](#prepare-the-software)
+6. [Turn it on!](#turn-it-on)
+
+---
+
+# Gather materials
+
+> _We used off-the-shelf parts to build our CLIMATECLOCK. Here are the physical parts needed to a build yours._
+
+* [Raspberry Pi 3 Model B+](https://www.adafruit.com/product/3775) (other recent models may also work)
+* [Adafruit RGB Matrix + Real Time Clock HAT](https://learn.adafruit.com/adafruit-rgb-matrix-plus-real-time-clock-hat-for-raspberry-pi)
+* [Brass M2.5 Standoffs for Pi HATs](https://www.adafruit.com/product/2336) (optional)
+* 1–3 [64x32 RGB LED Matrix](https://www.adafruit.com/product/2279) panels (3–6mm pitch)
+* [5V 4000mA Switching Power Supply](https://www.adafruit.com/product/1466)
+* CR1220 3V battery
+* Soldering iron
+* Rosin core solder
+* MicroSD memory card, 4GB or larger (make sure you don't need its contents!)
+* Computer running Mac OS, Windows, or Linux, with a MicroSD card reader or slot
+* Ethernet cable connection to the internet
 
 ---
 
@@ -58,7 +79,7 @@
 * 1–3 16-pin ribbon cables (1 per matrix panel)
 * 1–2 RGB matrix power harnesses
 
-<img src="C_materials.jpg" width=75%>
+<img src="C_materials.jpg" width=50%>
 
 > _HUB75 RGB matrix panels, which can be purchased from a number of manufacturers, use a standard interface which allows them to be chained together. These panels vary in their manner of using the 16 pins to carry information, so if you use a type other than those sold by Adafruit, your clock's software may require [tuning.](https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/README.md)_
 
@@ -91,7 +112,6 @@
 
 > _The software also includes a [Python](https://www.python.org/about/) program for controlling your CLIMATECLOCK. [This program](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/climateclock.py) follows a simple methodology for calculating the 1.5°C global carbon budget, and clockmakers who have basic experience with the Python programming language should find it easy to customize._
 
----
 
 - Download a [CLIMATECLOCK memory card image](???) to your computer. Choose the appropriate file for 1, 2, or 3 64x32 matrix panels. The files are nearly identical, but they've been pre-configured to use different numbers of panels. All three can be adjusted to work like the others by changing one number in a [config file](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/config.py) on the memory card.
 
@@ -112,12 +132,12 @@
 
 ---
 
-# Try it out
+# Turn it on!
 
 ### Materials:
 * Your brand new CLIMATECLOCK
 * [5V 4000mA Switching Power Supply](https://www.adafruit.com/product/1466)
-* Ethernet cable connected to the internet (a WiFi router or the box from your ISP should work, we just need something with DHCP)
+* Ethernet cable connected to the internet (plugging into a WiFi router, or the box from your ISP should work, anything that automatically gives out IP addresses with DHCP should do the trick)
 
 <img src="E_materials.jpg" width=50%>
 
