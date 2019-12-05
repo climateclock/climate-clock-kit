@@ -1,3 +1,5 @@
+<img src="banner.jpg" width=100%>
+
 # Make a CLIMATECLOCK
 
 1. [Gather materials](#gather-materials)
