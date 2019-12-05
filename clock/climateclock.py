@@ -66,7 +66,6 @@ def run(options):
 
         canvas.Clear()
 
-        days = days + 200
         t_strings = [
             f"{years:1.0f}",
             f"{'YR' if years == 1 else 'YRS'}",
