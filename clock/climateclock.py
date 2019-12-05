@@ -71,7 +71,7 @@ options = RGBMatrixOptions()
 options.rows = 32
 options.cols = 64
 options.chain_length = 3
-options.gpio_slowdown = (0, 1, 2, 3)[2]
+options.gpio_slowdown = (0, 1, 2, 3)[2 - options.chain_length == 3]
 # These may be preconfigured in the rgbmatrix library
 options.hardware_mapping = 'adafruit-hat' 
 options.disable_hardware_pulsing = True
