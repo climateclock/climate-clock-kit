@@ -6,5 +6,5 @@ IMG_NAME=CLIMATECLOCK-v0.0.1
 KEYBOARD_KEYMAP=us
 KEYBOARD_LAYOUT="English (US)"
 LOCALE_DEFAULT=en_US.UTF-8
-STAGE_LIST="stage0 stage1 stage2 clock-build-stage"
+STAGE_LIST="stage0 stage1 stage2 clock-stage-1_panel clock-stage-2_panel clock-stage-3_panel"
 TIMEZONE_DEFAULT=UTC
