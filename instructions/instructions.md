@@ -106,7 +106,7 @@
 * MicroSD memory card, 4GB or larger
 * Computer running Mac OS, Windows, or Linux, with a MicroSD card reader or slot
 * [balenaEtcher](https://www.balena.io/etcher/) for writing memory card images
-* [CLIMATECLOCK memory card image](https://github.com/???)
+* CLIMATECLOCK memory card image
 
 <img src="D_materials.jpg" width=50%>
 
@@ -115,7 +115,13 @@
 > _The software also includes a [Python](https://www.python.org/about/) program for controlling your CLIMATECLOCK. [This program](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/climateclock.py) follows a simple methodology for calculating the 1.5°C global carbon budget, and clockmakers who have basic experience with the Python programming language should find it easy to customize._
 
 
-- Download a [CLIMATECLOCK memory card image](???) to your computer. Choose the appropriate file for 1, 2, or 3 64x32 matrix panels. The files are nearly identical, but they've been pre-configured to use different numbers of panels. All three can be adjusted to work like the others by changing one number in a [config file](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/config.py) on the memory card.
+- Download a CLIMATECLOCK memory card image to your computer. Select one appropriate file for a CLIMATECLOCK built with 1, 2, or 3 64x32 rgb matrix panels. 
+    
+    * [Memory card image for clock w/1 64x32 RGB matrix panel](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-1_panel.img)
+    * [Memory card image for clock w/2 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-2_panel.img)
+    * [Memroy card image for clock w/3 64x32 rgb matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-3_panel.img)
+    
+  The files are nearly identical, but they've been pre-configured to use different numbers of panels. All three can be adjusted to work like the others by changing one number in a [config file](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/config.py) on the memory card.
 
 - Install [balenaEtcher](https://www.balena.io/etcher/), a tool for writing images to memory cards. If you prefer to use other tools (like `dd`), go right ahead and skip the following step. Be aware that just copying the image file *onto* the memory card, like by dragging the image file to the card's icon, **will not work!** It's important to copy the image with an appropriate tool.
 
