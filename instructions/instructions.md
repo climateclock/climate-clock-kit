@@ -11,7 +11,7 @@
 * Soldering iron
 * Rosin core solder (also called flux core solder)
 
-### _The RGB Matrix HAT is a purpose-built circuit board for powering and controlling LED matrix panels. HAT stands for Hardware Attached on Top, but before we can attach the HAT atop your Raspberry Pi it must be soldered together. If this is your first time using a soldering iron, check out the [Adafruit guide to excellent soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering) before continuing. Practice a few solder joints to make sure you're up to speed. If you don't have spare electronics stuff at hand you can try paperclips, coins, keyrings, or other metal objects (avoid aluminum because its oxide layer makes it hard to solder)._
+#### _The RGB Matrix HAT is a purpose-built circuit board for powering and controlling LED matrix panels. HAT stands for Hardware Attached on Top, but before we can attach the HAT atop your Raspberry Pi it must be soldered together. If this is your first time using a soldering iron, check out the [Adafruit guide to excellent soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering) before continuing. Practice a few solder joints to make sure you're up to speed. If you don't have spare electronics stuff at hand you can try paperclips, coins, keyrings, or other metal objects (avoid aluminum because its oxide layer makes it hard to solder)._
 
 ![](A_1.jpg) ![](A_2.jpg)
 
@@ -29,7 +29,7 @@ Solder the 40-pin GPIO header to the underside of the board, and the 16-pin HUB7
 * CR1220 3V battery
 * [Brass M2.5 Standoffs for Pi HATs](https://www.adafruit.com/product/2336) (optional)
 
-### _The Raspberry Pi does not, by itself, have a way to remember the date and time while switched off, but the HAT provides this capability with a small quartz crystal clock powered by a battery. When attached to the GPIO pins of the Pi, the HAT will also supply the Pi with power._
+#### _The Raspberry Pi does not, by itself, have a way to remember the date and time while switched off, but the HAT provides this capability with a small quartz crystal clock powered by a battery. When attached to the GPIO pins of the Pi, the HAT will also supply the Pi with power._
 
 ![](B_1.jpg) ![](B_2.jpg)
 
@@ -47,7 +47,7 @@ Screw the optional standoffs to the HAT for stability and plug its 40-pin header
 * 1–3 16-pin ribbon cables (1 per matrix panel)
 * 1–2 RGB matrix power harnesses
 
-### _HUB75 RGB matrix panels, which can be purchased from a number of manufacturers, use a standard interface which allows them to be chained together. These panels vary in their manner of using the 16 pins to carry information, so if you use a type other than those sold by Adafruit, your clock's software may require [tuning.](https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/README.md)_
+#### _HUB75 RGB matrix panels, which can be purchased from a number of manufacturers, use a standard interface which allows them to be chained together. These panels vary in their manner of using the 16 pins to carry information, so if you use a type other than those sold by Adafruit, your clock's software may require [tuning.](https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/README.md)_
 
 ![](C_1.jpg) ![](C_2.jpg)
 
@@ -72,9 +72,9 @@ If using 3 matrix panels, connect an additional power harness to the screw termi
 * [balenaEtcher](https://www.balena.io/etcher/) for writing memory card images
 * [CLIMATECLOCK memory card image](https://github.com/???)
 
-### _This software includes a Linux operating system based on [Raspbian](https://www.raspberrypi.org/downloads/raspbian/), the official operating system from the Raspberry Pi Foundation. We've modified Raspbian in a couple simple ways to work with the HAT. If you're interested in further customization, have a look at [our code for building the system on github](https://github.com/BeautifulTrouble/climate-clock-kit/tree/master/pi)._
+#### _This software includes a Linux operating system based on [Raspbian](https://www.raspberrypi.org/downloads/raspbian/), the official operating system from the Raspberry Pi Foundation. We've modified Raspbian in a couple simple ways to work with the HAT. If you're interested in further customization, have a look at [our code for building the system on github](https://github.com/BeautifulTrouble/climate-clock-kit/tree/master/pi)._
 
-### _The software also includes a [Python](https://www.python.org/about/) program for controlling your CLIMATECLOCK. [This program](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/climateclock.py) follows a simple methodology for calculating the 1.5°C global carbon budget, and clockmakers who have basic experience with the Python programming language should find it easy to customize._
+#### _The software also includes a [Python](https://www.python.org/about/) program for controlling your CLIMATECLOCK. [This program](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/climateclock.py) follows a simple methodology for calculating the 1.5°C global carbon budget, and clockmakers who have basic experience with the Python programming language should find it easy to customize._
 
 ![](D_1.jpg)
 
@@ -103,7 +103,7 @@ If using 3 matrix panels, connect an additional power harness to the screw termi
 * [5V 4000mA Switching Power Supply](https://www.adafruit.com/product/1466)
 * Ethernet cable connected to the internet (a WiFi router or the box from your ISP should work, we just need something with DHCP)
 
-### _The CLIMATECLOCK needs to connect to the internet at least one time to set its clock. And if climate change predictions change, we'll update our numbers on github, and connecting to the internet will update the clock (TODO: not yet implemented)._
+#### _The CLIMATECLOCK needs to connect to the internet at least one time to set its clock. And if climate change predictions change, we'll update our numbers on github, and connecting to the internet will update the clock (TODO: not yet implemented)._
 
 Plug the internet-connected ethernet cable into your CLIMATECLOCK, then plug in the power supply. The device should take 15-20 seconds to boot.
 
