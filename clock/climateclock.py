@@ -6,12 +6,14 @@ import sys
 import time
 from datetime import datetime, timezone
 
+import requests
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
 
 FONT = '9x18B.bdf'
 TIME_COLOR = '#ffd919'
 CO2_COLOR = '#9900e6'
+JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
 
 # TODO: Pull these from the network
 SECONDS_PER_YEAR = 365.25 * 24 * 3600

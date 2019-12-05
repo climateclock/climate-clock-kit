@@ -18,35 +18,35 @@ EOF
 ln -fsv /lib/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/multi-user.target.wants/climateclock.service"
 
 
+# Produce a build script for rpi-rgb-led-matrix
+echo "Adding rpi-rgb-led-matrix build script..."
+cat > "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/install_rgbmatrix.sh" <<EOF
+#!/bin/bash
+
+cd "/home/${FIRST_USER_NAME}"
+[ -d rpi-rgb-led-matrix ] || git clone https://github.com/hzeller/rpi-rgb-led-matrix
+cd rpi-rgb-led-matrix
+git checkout e3dd56dcc0408862f39cccc47c1d9dea1b0fb2d2
+make build-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/usr/bin/python3
+make install-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/usr/bin/python3
+EOF
+chmod +x "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/install_rgbmatrix.sh"
+
+
 # Build and install the python library from within the emulated target system
 # TODO: Make this whole process repeatable for those who update their system python version
 on_chroot << EOF
     echo "Adding rpi-rgb-led-matrix python library..."
     cd "/home/${FIRST_USER_NAME}"
-    pushd .
 
     # Pull the climate-clock-kit repo and modify the shebang for a virtualenv
     [ -d climate-clock-kit ] || git clone https://github.com/beautifultrouble/climate-clock-kit
-    sed -i '1c #!/home/'${FIRST_USER_NAME}'/venv/bin/python3' climate-clock-kit/clock/climateclock.py
     ln -sf climate-clock-kit/clock/climateclock.py
-    ln -sf climate-clock-kit/clock/requirements.txt
-
-    # Make a virtualenv and install requirements
-    [ -d venv ] || /usr/bin/python3 -m venv venv
-    ln -sf venv/bin/activate
-    . ./activate
-    pip install wheel
-    pip install -r requirements.txt
 
     # Build the matrix library
-    [ -d rpi-rgb-led-matrix ] || git clone https://github.com/hzeller/rpi-rgb-led-matrix
-    cd rpi-rgb-led-matrix
-    git checkout e3dd56dcc0408862f39cccc47c1d9dea1b0fb2d2
-    make build-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/home/${FIRST_USER_NAME}/venv/bin/python3
-    make install-python HARDWARE_DESC=adafruit-hat USER_DEFINES="-DDISABLE_HARDWARE_PULSES" PYTHON=/home/${FIRST_USER_NAME}/venv/bin/python3
+    ./install_rgbmatrix.sh
 
     # Fix ownership of everything we've just created
-    popd
     chown -R 1000:1000 *
 EOF
 
