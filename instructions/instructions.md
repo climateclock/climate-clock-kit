@@ -115,7 +115,7 @@
 > _The software also includes a [Python](https://www.python.org/about/) program for controlling your CLIMATECLOCK. [This program](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/climateclock.py) follows a simple methodology for calculating the 1.5°C global carbon budget, and clockmakers who have basic experience with the Python programming language should find it easy to customize._
 
 
-- Download a CLIMATECLOCK memory card image to your computer. Select the file appropriate for the number of RGB matrix panels used in your clock.
+- Download a CLIMATECLOCK memory card image to your computer. Select the file appropriate for the number of RGB matrix panels used in your clock:
     
     * [Memory card image for CLIMATECLOCK w/1 64x32 RGB matrix panel](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-1_panel.img)
     * [Memory card image for CLIMATECLOCK w/2 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-2_panel.img)
