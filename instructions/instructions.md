@@ -22,7 +22,7 @@
 * [5V 4000mA Switching Power Supply](https://www.adafruit.com/product/1466)
 * CR1220 3V battery
 * Soldering iron
-* Rosin core solder
+* Rosin core solder (also called flux core solder)
 * MicroSD memory card, 4GB or larger (make sure you don't need its contents!)
 * Computer running Mac OS, Windows, or Linux, with a MicroSD card reader or slot
 * Ethernet cable connection to the internet
@@ -45,7 +45,7 @@
 > _The RGB Matrix HAT is a purpose-built circuit board for powering and controlling LED matrix panels. HAT stands for Hardware Attached on Top, but before we can attach the HAT atop your Raspberry Pi it must be soldered together. If this is your first time using a soldering iron, check out the [Adafruit guide to excellent soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering) before continuing. Practice a few solder joints to make sure you're up to speed. If you don't have spare electronics stuff at hand you can try paperclips, coins, keyrings, or other metal objects (avoid aluminum because its oxide layer makes it hard to solder)._
 
 
-- Solder the 40-pin GPIO header to the underside of the board, and the 16-pin HUB75 header to the top. Make sure the notch on the HUB75 header aligns with the notch drawn on the board. Use a PCB holder, tape, or picture hanging putty to hold the parts in place if needed. 
+- Solder the 40-pin GPIO header to the underside of the board, and the 16-pin HUB75 header to the top. Make sure the notch on the HUB75 header aligns with the notch drawn on the board. Use a [PCB holder](https://www.adafruit.com/product/291), tape, or picture hanging putty to hold the parts in place if needed. 
 
 - Solder the screw terminal to the top of the board, making sure the terminals (where you will attach power wires) face outward. Use plenty of solder to attach this part, as it will carry all the power to the LED panels.
 
@@ -119,7 +119,7 @@
     
     * [Memory card image for CLIMATECLOCK w/1 64x32 RGB matrix panel](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-1_panel.img)
     * [Memory card image for CLIMATECLOCK w/2 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-2_panel.img)
-    * [Memroy card image for CLIMATECLOCK w/3 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-3_panel.img)
+    * [Memory card image for CLIMATECLOCK w/3 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-3_panel.img)
     
   The three files are nearly identical and each of them can be adjusted to work like the others by changing one number in a [config file](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/config.py) on the memory card (`/home/clock/climate-clock-kit/clock/config.py`).
 
