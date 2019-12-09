@@ -1,6 +1,6 @@
-<img src="makerkit/banner.jpg" width=100%>
+<img src="makerkit/banner.jpg" width="100% !important">
 
-# Make a CLIMATECLOCK
+The #ClimateClock is an open-source project. Our team in New York that put together Greta’s mobile climate clock used inexpensive electronics (programmable Raspberry Pi circuit board, RGB LED matrix panels, etc.), a wooden casing, and the scientific methodology outlined here by Berlin’s MCC climate research institute — and so can you!
 
 1. [Gather materials](#gather-materials)
 2. [Assemble the RGB Matrix HAT](#assemble-the-rgb-matrix-hat)
@@ -151,6 +151,6 @@
 
 > _The CLIMATECLOCK needs to connect to the internet at least one time to set its clock. And if climate change predictions change, we'll update our numbers on github, and connecting to the internet will update the clock (TODO: not yet implemented)._
 
-- Plug the internet-connected ethernet cable into your CLIMATECLOCK, then plug in the power supply. The device should take 15-20 seconds to boot.
+- Plug the internet-connected ethernet cable into your CLIMATECLOCK, then plug in the power supply. The clock should take 15-20 seconds to boot.
 
 ![](makerkit/E_1.jpg)
