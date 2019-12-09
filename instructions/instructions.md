@@ -157,6 +157,4 @@
 
 ![](makerkit/E_1.jpg)
 
----
-
 ##### This document is an open source work-in-progress. Please direct contributions to our [github project](https://github.com/BeautifulTrouble/climate-clock-kit)!
