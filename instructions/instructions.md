@@ -156,3 +156,7 @@
 - Plug the internet-connected ethernet cable into your CLIMATECLOCK, then plug in the power supply. The clock should take 15-20 seconds to boot.
 
 ![](makerkit/E_1.jpg)
+
+---
+
+##### This document is an open source work-in-progress. Please direct contributions to our [github project](https://github.com/BeautifulTrouble/climate-clock-kit)!
