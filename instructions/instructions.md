@@ -38,7 +38,7 @@
 * [Adafruit RGB Matrix + Real Time Clock HAT](https://learn.adafruit.com/adafruit-rgb-matrix-plus-real-time-clock-hat-for-raspberry-pi)
 * 40-pin GPIO header
 * 16-pin HUB75 header
-* 2-pin screw terminal
+* 2-pin screw terminal block
 * Soldering iron
 * Rosin core solder (also called flux core solder)
 
@@ -49,7 +49,7 @@
 
 - Solder the 40-pin GPIO header to the underside of the board, and the 16-pin HUB75 header to the top. Make sure the notch on the HUB75 header aligns with the notch drawn on the board. Use a [PCB holder](https://www.adafruit.com/product/291), tape, or picture hanging putty to hold the parts in place if needed. 
 
-- Solder the screw terminal to the top of the board, making sure the terminals (where you will attach power wires) face outward. Use plenty of solder to attach this part, as it will carry all the power to the LED panels.
+- Solder the screw terminal block to the top of the board, making sure the terminals (where you will attach power wires) face outward. Use plenty of solder to attach this part, as it will carry all the power to the LED panels.
 
 <img src="makerkit/A_1.jpg" width=50%><img src="makerkit/A_2.jpg" width=50%>
 
@@ -88,7 +88,7 @@
 > _HUB75 RGB matrix panels, which can be purchased from a number of manufacturers, use a standard interface which allows them to be chained together. These panels vary in their manner of using the 16 pins to carry information, so if you use a type other than those sold by Adafruit, your clock's software may require [tuning.](https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/README.md)_
 
 
-- Attach the fork terminals of the red (+) and black (-) wires on the power harness to the screw terminal of the HAT, and the 16-pin ribbon cable to the HUB75 header. Attach one of the connectors on the power harness to a matrix panel. Attach the ribbon cable to the matrix panel. Be sure to connect it to the side of the panel which has an arrow pointing toward the panel's center.
+- Attach the fork terminals of the red (+) and black (-) wires on the power harness to the screw terminals of the HAT, and the 16-pin ribbon cable to the HUB75 header. Attach one of the connectors on the power harness to a matrix panel. Attach the ribbon cable to the matrix panel. Be sure to connect it to the side of the panel which has an arrow pointing toward the panel's center.
 
 <img src="makerkit/C_1.jpg" width=50%><img src="makerkit/C_2.jpg" width=50%>
 
@@ -96,7 +96,11 @@
 
 <img src="makerkit/C_3.jpg" width=50%>
 
-- If using 3 matrix panels, connect an additional power harness to the screw terminal of the HAT. Be certain that the fork terminals cannot come loose and cause a short circuit by touching opposite-colored wires. You may wish to splice the same-colored wires of both harnesses together so that a single pair of fork terminals can be used. Chain the third panel's ribbon cable in the same manner as the second.
+- If using 3 matrix panels, connect an additional power harness to the screw terminals of the HAT. Be certain that the fork terminals cannot come loose and cause a short circuit by touching opposite-colored wires. 
+  
+  Because of the limited space at the screw terminals, you may wish to instead splice the same-colored wires of both harnesses together so that a single pair of fork terminals can be used. Another option is to insert the fork terminals of the second power harness into a power connector of the first power harness, and use the second power harness to power the second and third panels.
+  
+  Chain the third panel's ribbon cable in the same manner as the second.
 
 <img src="makerkit/C_4.jpg" width=50%><img src="makerkit/C_5.jpg" width=50%>
 
