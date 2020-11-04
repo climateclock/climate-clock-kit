@@ -49,7 +49,7 @@
 
 - Solder the 40-pin GPIO header to the underside of the board, and the 16-pin HUB75 header to the top. Make sure the notch on the HUB75 header aligns with the notch drawn on the board. Use a [PCB holder](https://www.adafruit.com/product/291), tape, or picture hanging putty to hold the parts in place if needed. 
 
-- Solder the screw terminal block to the top of the board, making sure the terminals (where you will attach power wires) face outward. Use plenty of solder to attach this part, as it will carry all the power to the LED panels.
+- Solder the screw terminal block to the top of the board, making sure the terminals (where you will attach power wires) face outward. Use plenty of solder to attach this part.
 
 <img src="makerkit/A_1.jpg" width=50%><img src="makerkit/A_2.jpg" width=50%>
 
