@@ -11,10 +11,10 @@ import requests
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
 
-TIME_COLOR = '#ffd919'
-TIME_ALT_COLOR = '#c8890a'
-BUDGET_COLOR = '#9900e6'
-BUDGET_ALT_COLOR = '#671497'
+TIME_COLOR = '#FF3115'     #Red is #FF3115, Yellow was '#ffd919'
+TIME_ALT_COLOR = '#890F02' # Red is alt is #890F02, Yellow alt was '#c8890a'
+BUDGET_COLOR = '#0FD87D' #Green is 0FD87D Purple was #9900E6
+BUDGET_ALT_COLOR = '#107D46' #Green alt:107D46 purple alt was: 671497
 
 
 # TODO: Pull these from the network
