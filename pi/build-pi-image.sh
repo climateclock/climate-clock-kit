@@ -6,7 +6,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # Get a password
 if ! grep -q "^\s*FIRST_USER_PASS=.\+" config; then
-    read -p "Enter a password for the system being built: " PASSWORD
+    echo -en "Enter a linux password for the system build built."\
+             "\nDO NOT use any characters with special significance in bash syntax: "
+    read PASSWORD
     echo "FIRST_USER_PASS=$PASSWORD" >>config
 fi
 
