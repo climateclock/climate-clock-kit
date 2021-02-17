@@ -126,6 +126,6 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
         # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
         await asyncio.sleep(max(
             INTERVAL_MINIMUM_SECONDS,
-            min([0, *(m['update_interval_seconds'] for m in modules)])
+            min((m['update_interval_seconds'] for m in modules), default=0)
         ))
 
