@@ -43,6 +43,14 @@ _module_base = {
     Optional('lang'): str,
 }
 
+_module_value_base = {
+    **_module_base,
+    'type': 'value',
+    'initial': Number,
+    'timestamp': str,
+    'units': str,
+}
+
 module_data = Schema(Or(
     { 
         **_module_base,
@@ -63,21 +71,13 @@ module_data = Schema(Or(
         }],
     }, 
     Or({ 
-        **_module_base,
-        'type': 'value',
-        'initial': Number,
-        'timestamp': str,
+        **_module_value_base,
         'growth': 'linear',
-        'units': str,
         'rate': Number,
     },
     {
-        **_module_base,
-        'type': 'value',
-        'initial': Number,
-        'timestamp': str,
+        **_module_value_base,
         'growth': 'exponential',    # TODO: Not yet in the spec
-        'units': str,
         'exponent': Number,
     }),
 ))
