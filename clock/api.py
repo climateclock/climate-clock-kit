@@ -94,11 +94,11 @@ def get_valid_modules(d):
             if name in d['data']['config']['modules'] and module_data.is_valid(module)]
 
 
-async def provide_clock_modules(session, modules):
+async def provide_clock_modules(session: aiohttp.ClientSession, modules: list):
     '''
-    Fetch API data and schedule next request
+    Periodically fetch API data and provide clock modules to the `modules`
+    list. 
     '''
-    interval = 60
     timeout = aiohttp.ClientTimeout(total=5)
 
     # Load known good frozen API data from disk
@@ -116,34 +116,13 @@ async def provide_clock_modules(session, modules):
 
                 # TODO: Else????????????
 
-
-                #assert api_data.is_valid(j)
-                #data = j['data']
-                #print(api_data.is_valid(j))
-                #print(api_data.validate(j))
-
-                #if j.get('status') == 'success':
-                    # TODO: Validate api data as one step
-                    #data = j['data']
-
         #except (aiohttp.ClientError, asyncio.TimeoutError) as e:
         except Exception as e:
             # TODO: Get good API snapshot
             log('--> Falling back to snapshot/frozen', e)
 
-        """
-        try:
-            modules = [m for n, m in data['modules'].items()
-                       if n in data['config']['modules'] and module_data.is_valid(m)]
-
-            # Pick the smallest update interval above INTERVAL_MIN
-            #interval = max(INTERVAL_MINIMUM, min(m['update_interval_seconds'] for m in modules))
-            interval = 10
-        except Exception as e:
-            log(e)
-        """
-        #interval = 10
-
+        # Sleep based on whichever module has the shortest 
+        # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
         await asyncio.sleep(max(
             INTERVAL_MINIMUM_SECONDS,
             min(m['update_interval_seconds'] for m in modules)
