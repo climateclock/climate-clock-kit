@@ -1,3 +1,4 @@
+# TODO: Include every possible option
 brightness = 100
 rows = 32
 cols = 64
