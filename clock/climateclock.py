@@ -31,8 +31,8 @@ async def main():
         #if not key.startswith('__'):
             #setattr(options, key, value)
 
-    async with aiohttp.ClientSession() as session:
-        loop.create_task(provide_clock_modules(session, modules))
+    async with aiohttp.ClientSession() as http:
+        loop.create_task(provide_clock_modules(http, modules))
         loop.create_task(update_clock(options))
         await quit
     

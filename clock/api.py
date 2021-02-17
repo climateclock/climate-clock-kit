@@ -83,9 +83,10 @@ module_data = Schema(Or(
 ))
 
 
-def get_valid_modules(d):
+def get_valid_modules(d: object) -> list:
     '''
     Given raw API data, return any and all valid, supported clock modules
+    based on the `api_data` and `module_data` schemata.
     '''
     if not api_data.is_valid(d):
         return []
@@ -94,27 +95,22 @@ def get_valid_modules(d):
             if name in d['data']['config']['modules'] and module_data.is_valid(module)]
 
 
-async def provide_clock_modules(session: aiohttp.ClientSession, modules: list):
+async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> None:
     '''
     Periodically fetch API data and provide clock modules to the `modules`
-    list. 
+    list.
     '''
     timeout = aiohttp.ClientTimeout(total=5)
 
-    # Load known good frozen API data from disk
+    # Load KNOWN GOOD frozen API data from disk
+    # NOTE: This is presumed to be good data!  
     with open(API_FROZEN) as f:
         modules[:] = get_valid_modules(json.load(f))
-
-    '''
-    rubberduck:
-
-
-    '''
 
     while True:
         try:
             log('--> Fetching API data')
-            async with session.get(API_ENDPOINT, timeout=timeout) as r:
+            async with http.get(API_ENDPOINT, timeout=timeout) as r:
                 if (m := get_valid_modules(await r.json())):
                     modules[:] = m
                     # TODO: Save good api snapshot
@@ -130,6 +126,6 @@ async def provide_clock_modules(session: aiohttp.ClientSession, modules: list):
         # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
         await asyncio.sleep(max(
             INTERVAL_MINIMUM_SECONDS,
-            min(m['update_interval_seconds'] for m in modules)
+            min([0, *(m['update_interval_seconds'] for m in modules)])
         ))
 
