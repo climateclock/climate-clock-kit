@@ -103,15 +103,20 @@ async def provide_clock_modules(session: aiohttp.ClientSession, modules: list):
 
     # Load known good frozen API data from disk
     with open(API_FROZEN) as f:
-        data = json.load(f)['data']
+        modules[:] = get_valid_modules(json.load(f))
+
+    '''
+    rubberduck:
+
+
+    '''
 
     while True:
         try:
             log('--> Fetching API data')
             async with session.get(API_ENDPOINT, timeout=timeout) as r:
                 if (m := get_valid_modules(await r.json())):
-                    modules.clear()
-                    modules.extend(m)
+                    modules[:] = m
                     # TODO: Save good api snapshot
 
                 # TODO: Else????????????
