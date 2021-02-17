@@ -14,7 +14,7 @@ API_FROZEN = 'api_frozen.json'
 INTERVAL_MINIMUM_SECONDS = 300
 
 
-# Validation schema for API data
+# Validation schemata for API data
 
 Misc = {Optional(object): object}
 Number = Or(float, int)
@@ -104,6 +104,7 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
 
     # Load KNOWN GOOD frozen API data from disk
     # NOTE: This is presumed to be good data!  
+    # Q: should this be external?
     with open(API_FROZEN) as f:
         modules[:] = get_valid_modules(json.load(f))
 
@@ -129,3 +130,8 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
             min((m['update_interval_seconds'] for m in modules), default=0)
         ))
 
+
+__all__ = [
+    'API_ENDPOINT',
+    'provide_clock_modules',
+]
