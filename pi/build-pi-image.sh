@@ -9,7 +9,7 @@ if ! grep -q "^\s*FIRST_USER_PASS=.\+" config; then
     echo -en "Enter a linux password for the system build built."\
              "\nDO NOT use any characters with special significance in bash syntax: "
     read PASSWORD
-    echo "FIRST_USER_PASS=$PASSWORD" >>config
+    echo "FIRST_USER_PASS='${PASSWORD}'" >>config
 fi
 
 
