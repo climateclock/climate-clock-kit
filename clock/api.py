@@ -35,7 +35,7 @@ api_data = Schema({
 _module_base = {
     **Misc,
     'type': str,
-    'flavor': Or('lifeline', 'deadline'),
+    'flavor': Or('lifeline', 'deadline', 'neutral'),
     'description': str,
     'update_interval_seconds': Number,
     Optional('label'): str,
@@ -70,16 +70,18 @@ module_data = Schema(Or(
             Optional('summary'): str,
         }],
     }, 
-    Or({ 
-        **_module_value_base,
-        'growth': 'linear',
-        'rate': Number,
-    },
-    {
-        **_module_value_base,
-        'growth': 'exponential',    # TODO: Not yet in the spec
-        'exponent': Number,
-    }),
+    Or(
+        {
+            **_module_value_base,
+            'growth': 'linear',
+            'rate': Number,
+        },
+        {
+            **_module_value_base,
+            'growth': 'exponential',    # TODO: Not yet in the spec
+            'exponent': Number,
+        },
+    ),
 ))
 
 
@@ -97,8 +99,8 @@ def get_valid_modules(d: object) -> list:
 
 async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> None:
     '''
-    Periodically fetch API data and provide clock modules to the `modules`
-    list.
+    Periodically fetch API data with the `http` client and provide clock 
+    modules to the `modules` list.
     '''
     timeout = aiohttp.ClientTimeout(total=5)
 
