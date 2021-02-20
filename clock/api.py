@@ -9,6 +9,7 @@ from utils import log
 
 API_DEVICE = 'portable_pi'
 API_ENDPOINT = f'https://api.climateclock.world/v1/clock?device={API_DEVICE}'
+API_CACHE = 'api_cache.json'
 API_FROZEN = 'api_frozen.json'
 
 INTERVAL_MINIMUM_SECONDS = 300
@@ -19,7 +20,7 @@ INTERVAL_MINIMUM_SECONDS = 300
 Misc = {Optional(object): object}
 Number = Or(float, int)
 
-api_data = Schema({
+api_schema = Schema({
     'status': 'success',
     'data': {
         **Misc,
@@ -51,7 +52,7 @@ _module_value_base = {
     'units': str,
 }
 
-module_data = Schema(Or(
+module_schema = Schema(Or(
     { 
         **_module_base,
         'type': 'timer',
@@ -85,16 +86,40 @@ module_data = Schema(Or(
 ))
 
 
-def get_valid_modules(d: object) -> list:
+def get_valid_modules(api_data: dict) -> list:
     '''
     Given raw API data, return any and all valid, supported clock modules
-    based on the `api_data` and `module_data` schemata.
+    based on the `api_schema` and `module_schema` schemas.
     '''
-    if not api_data.is_valid(d):
+    if not api_schema.is_valid(api_data):
         return []
 
-    return [module_data.validate(module) for name, module in d['data']['modules'].items()
-            if name in d['data']['config']['modules'] and module_data.is_valid(module)]
+    return [module_schema.validate(module) for name, module in api_data['data']['modules'].items()
+            if name in api_data['data']['config']['modules'] and module_schema.is_valid(module)]
+
+
+def load_cache(filenames=(API_CACHE, API_FROZEN)) -> dict:
+    '''
+    Attempt to load API cache, falling back to frozen API data
+    '''
+    for filename in filenames:
+        try:
+            with open(filename) as f:
+                api_data = json.load(f) or {}
+                log(f'Loaded: {filename}')
+                return api_data
+        except Exception as e: log(e)
+
+
+def save_cache(api_data: dict, filename=API_CACHE) -> None:
+    '''
+    Attempt to save cache and log failure
+    '''
+    try:
+        with open(filename, 'w') as f:
+            json.dump(api_data, f)
+            log(f'Saved: {filename}')
+    except Exception as e: log(e)
 
 
 async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> None:
@@ -103,27 +128,17 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
     modules to the `modules` list.
     '''
     timeout = aiohttp.ClientTimeout(total=5)
-
-    # Load KNOWN GOOD frozen API data from disk
-    # NOTE: This is presumed to be good data!  
-    # Q: should this be external?
-    with open(API_FROZEN) as f:
-        modules[:] = get_valid_modules(json.load(f))
+    modules[:] = get_valid_modules(load_cache())
 
     while True:
         try:
-            log('--> Fetching API data')
             async with http.get(API_ENDPOINT, timeout=timeout) as r:
-                if (m := get_valid_modules(await r.json())):
+                api_data = await r.json()
+                if (m := get_valid_modules(api_data)):
                     modules[:] = m
-                    # TODO: Save good api snapshot
-
-                # TODO: Else????????????
-
-        #except (aiohttp.ClientError, asyncio.TimeoutError) as e:
-        except Exception as e:
-            # TODO: Get good API snapshot
-            log('--> Falling back to snapshot/frozen', e)
+                    log(f'Received: {API_ENDPOINT}')
+                    save_cache(api_data)
+        except Exception as e: ...
 
         # Sleep based on whichever module has the shortest 
         # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
