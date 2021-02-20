@@ -3,43 +3,48 @@
 from __future__ import annotations
 
 import asyncio
-import json
-from pathlib import Path
+import sys
 
 import aiohttp
+import rgbmatrix
 
 import config
 from api import provide_clock_modules
+from utils import log
 
 
 modules = []
 
 
 async def update_clock(options: rgbmatrix.RGBMatrixOptions, quit: asyncio.Future) -> None:
-    from pprint import pprint
-    while True:
-        print(__import__('time').time(), len(modules))
-        pprint(modules)
-        await asyncio.sleep(.2)
+    ...
 
 
 async def main() -> [str, int]:
     '''
     Load matrix config and launch all tasks
     '''
-    options = None
-    #options = RGBMatrixOptions()
-    #for key, value in vars(config).items():
-        #if not key.startswith('__'):
-            #setattr(options, key, value)
+    # Apply matrix-specific configuration options from config module
+    options = rgbmatrix.RGBMatrixOptions()
+    options_prefix = 'matrix_'
+    for key, value in vars(config).items():
+        try:
+            if key.startswith(options_prefix):
+                setattr(options, key[len(options_prefix):], value)
+        except AttributeError:
+            log(f'Ignoring: {key} = {value}')
 
+    # Run all tasks within the context of the aiohttp session
     async with aiohttp.ClientSession() as http:
-        loop.create_task(provide_clock_modules(http, modules))
-        loop.create_task(update_clock(options))
-        await quit
+        quit = asyncio.Future()
+
+        asyncio.create_task(provide_clock_modules(http, modules))
+        asyncio.create_task(update_clock(options, quit))
+
+        # Wait for a task to call quit.set_result(result)
+        return await quit
     
 
 if __name__ == '__main__':
-    quit = asyncio.Future()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    sys.exit(asyncio.run(main()))
+
