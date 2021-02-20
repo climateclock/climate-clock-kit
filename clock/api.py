@@ -1,4 +1,6 @@
 
+from __future__ import annotations
+
 import asyncio
 import json
 
@@ -98,7 +100,7 @@ def get_valid_modules(api_data: dict) -> list:
             if name in api_data['data']['config']['modules'] and module_schema.is_valid(module)]
 
 
-def load_cache(filenames=(API_CACHE, API_FROZEN)) -> dict:
+def load_cache(filenames: list[str]=[API_CACHE, API_FROZEN]) -> dict:
     '''
     Attempt to load API cache, falling back to frozen API data
     '''
@@ -111,7 +113,7 @@ def load_cache(filenames=(API_CACHE, API_FROZEN)) -> dict:
         except Exception as e: log(e)
 
 
-def save_cache(api_data: dict, filename=API_CACHE) -> None:
+def save_cache(api_data: dict, filename: str=API_CACHE) -> None:
     '''
     Attempt to save cache and log failure
     '''

@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+from __future__ import annotations
 
 import asyncio
 import json
@@ -13,7 +15,7 @@ from api import provide_clock_modules
 modules = []
 
 
-async def update_clock(options):
+async def update_clock(options: rgbmatrix.RGBMatrixOptions, quit: asyncio.Future) -> None:
     from pprint import pprint
     while True:
         print(__import__('time').time(), len(modules))
@@ -21,7 +23,7 @@ async def update_clock(options):
         await asyncio.sleep(.2)
 
 
-async def main():
+async def main() -> [str, int]:
     '''
     Load matrix config and launch all tasks
     '''
