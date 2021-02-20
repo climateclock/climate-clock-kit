@@ -140,7 +140,8 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
                     modules[:] = m
                     log(f'Received: {API_ENDPOINT}')
                     save_cache(api_data)
-        except Exception as e: ...
+        except Exception as e:
+            log(f'Unavailable: {API_ENDPOINT}')
 
         # Sleep based on whichever module has the shortest 
         # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
