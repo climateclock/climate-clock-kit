@@ -2,7 +2,7 @@
 # Sets brightness level. Default: 100. Range: 1..100
 matrix_brightness = 100
 # Daisy-chained boards. Default: 1.
-matrix_chain_length = 1
+matrix_chain_length = 3
 # Panel columns. Typically 32 or 64. (Default: 32)
 matrix_cols = 64
 # Don't use hardware pin-pulse generation
