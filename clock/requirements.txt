@@ -1,0 +1,8 @@
+numpy
+pyqt5
+
+# Reproduce this in the install script
+# Install python3-venv, libopenjp2-7 too!
+aiohttp
+schema
+pillow
