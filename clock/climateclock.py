@@ -8,11 +8,14 @@ import sys
 import aiohttp
 import rgbmatrix
 
-import config
-from api import provide_clock_modules
+import settings
+import module_handlers
+from api import provide_api_data
+from display import Display
 from utils import log
 
 
+config = {}
 modules = []
 
 
@@ -36,15 +39,13 @@ async def main() -> [str, int]:
 
     # Run all tasks within the context of the aiohttp session
     async with aiohttp.ClientSession() as http:
+        # Tasks can call quit.set_result(result) to quit
         quit = asyncio.Future()
-
         asyncio.create_task(provide_clock_modules(http, modules))
         asyncio.create_task(update_clock(options, quit))
-
-        # Wait for a task to call quit.set_result(result)
-        return await quit
+        await quit
     
 
 if __name__ == '__main__':
-    sys.exit(asyncio.run(main()))
+    asyncio.run(main())
 

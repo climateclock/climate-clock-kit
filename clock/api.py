@@ -9,8 +9,7 @@ from schema import And, Optional, Or, Schema, Use
 from utils import log
 
 
-API_DEVICE = 'portable_pi'
-API_ENDPOINT = f'https://api.climateclock.world/v1/clock?device={API_DEVICE}'
+API_ENDPOINT = 'https://api.climateclock.world/v1/clock'
 API_CACHE = 'api_cache.json'
 API_FROZEN = 'api_frozen.json'
 
@@ -28,7 +27,7 @@ api_schema = Schema({
         **Misc,
         'config': {
             **Misc,
-            'device': API_DEVICE,
+            'device': str,
             'modules': [str],
         },
         'modules': {str: dict},
@@ -88,16 +87,19 @@ module_schema = Schema(Or(
 ))
 
 
-def get_valid_modules(api_data: dict) -> list:
+def update_valid_api_data(api_data: dict, config: dict, modules: list) -> [None, True]:
     '''
-    Given raw API data, return any and all valid, supported clock modules
-    based on the `api_schema` and `module_schema` schemas.
+    Update mutable `config` dict and `modules` list with valid API data and
+    return True when this has taken place.
     '''
-    if not api_schema.is_valid(api_data):
-        return []
+    if api_schema.is_valid(api_data):
+        config.clear()
+        config.update(api_data['data']['config'])
 
-    return [module_schema.validate(module) for name, module in api_data['data']['modules'].items()
-            if name in api_data['data']['config']['modules'] and module_schema.is_valid(module)]
+        modules[:] = [module_schema.validate(module)
+                      for name, module in api_data['data']['modules'].items()
+                      if name in config['modules'] and module_schema.is_valid(module)]
+        return True
 
 
 def load_cache(filenames: list[str]=[API_CACHE, API_FROZEN]) -> dict:
@@ -124,24 +126,25 @@ def save_cache(api_data: dict, filename: str=API_CACHE) -> None:
     except Exception as e: log(e)
 
 
-async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> None:
+async def provide_api_data(http: aiohttp.ClientSession, device_name: str, config: dict, modules: list) -> None:
     '''
-    Periodically fetch API data with the `http` client and provide clock 
-    modules to the `modules` list.
+    Periodically fetch API data with the `http` client and provide API data
+    to the `config` dict and `modules` list.
     '''
+    endpoint = f'{API_ENDPOINT}?device={device_name}'
     timeout = aiohttp.ClientTimeout(total=5)
-    modules[:] = get_valid_modules(load_cache())
+
+    update_valid_api_data(load_cache(), config, modules)
 
     while True:
         try:
-            async with http.get(API_ENDPOINT, timeout=timeout) as r:
+            async with http.get(endpoint, timeout=timeout) as r:
                 api_data = await r.json()
-                if (m := get_valid_modules(api_data)):
-                    modules[:] = m
-                    log(f'Received: {API_ENDPOINT}')
+                if update_valid_api_data(api_data, config, modules):
+                    log(f'Received: {endpoint}')
                     save_cache(api_data)
         except Exception as e:
-            log(f'Unavailable: {API_ENDPOINT}')
+            log(f'Unavailable: {endpoint}')
 
         # Sleep based on whichever module has the shortest 
         # update_interval_seconds, or at least INTERVAL_MINIMUM_SECONDS
@@ -153,5 +156,5 @@ async def provide_clock_modules(http: aiohttp.ClientSession, modules: list) -> N
 
 __all__ = [
     'API_ENDPOINT',
-    'provide_clock_modules',
+    'provide_api_data',
 ]
