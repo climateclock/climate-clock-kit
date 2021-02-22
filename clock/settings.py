@@ -1,4 +1,22 @@
 
+#---------
+# Generic
+#---------
+
+# Test GUI pixel width
+generic_width = 192
+
+# Test GUI pixel height
+generic_height = 32
+
+# Test GUI scale factor
+generic_scale = 4
+
+
+#-------------
+# Portable Pi
+#-------------
+
 # Sets brightness level. Default: 100. Range: 1..100
 portable_pi_brightness = 100
 
