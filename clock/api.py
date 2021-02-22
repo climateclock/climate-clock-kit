@@ -6,6 +6,7 @@ import json
 
 import aiohttp
 from schema import And, Optional, Or, Schema, Use
+
 from utils import log
 
 
@@ -87,21 +88,6 @@ module_schema = Schema(Or(
 ))
 
 
-def update_valid_api_data(api_data: dict, config: dict, modules: list) -> [None, True]:
-    '''
-    Update mutable `config` dict and `modules` list with valid API data and
-    return True when this has taken place.
-    '''
-    if api_schema.is_valid(api_data):
-        config.clear()
-        config.update(api_data['data']['config'])
-
-        modules[:] = [module_schema.validate(module)
-                      for name, module in api_data['data']['modules'].items()
-                      if name in config['modules'] and module_schema.is_valid(module)]
-        return True
-
-
 def load_cache(filenames: list[str]=[API_CACHE, API_FROZEN]) -> dict:
     '''
     Attempt to load API cache, falling back to frozen API data
@@ -124,6 +110,21 @@ def save_cache(api_data: dict, filename: str=API_CACHE) -> None:
             json.dump(api_data, f)
             log(f'Saved: {filename}')
     except Exception as e: log(e)
+
+
+def update_valid_api_data(api_data: dict, config: dict, modules: list) -> [None, True]:
+    '''
+    Update mutable `config` dict and `modules` list with valid API data and
+    return True when this has taken place.
+    '''
+    if api_schema.is_valid(api_data):
+        config.clear()
+        config.update(api_data['data']['config'])
+
+        modules[:] = [module_schema.validate(module)
+                      for name, module in api_data['data']['modules'].items()
+                      if name in config['modules'] and module_schema.is_valid(module)]
+        return True
 
 
 async def provide_api_data(http: aiohttp.ClientSession, device_name: str, config: dict, modules: list) -> None:
