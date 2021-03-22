@@ -1,10 +1,10 @@
 DEPLOY_ZIP=0
 ENABLE_SSH=1
-FIRST_USER_NAME=clock
-HOSTNAME=climate
-IMG_NAME=CLIMATECLOCK-v0.0.1
+FIRST_USER_NAME=climate
+HOSTNAME=clock
+IMG_NAME=CLIMATECLOCK-v0.1.0
 KEYBOARD_KEYMAP=us
 KEYBOARD_LAYOUT="English (US)"
 LOCALE_DEFAULT=en_US.UTF-8
-STAGE_LIST="stage0 stage1 stage2 clock-stage-1_panel clock-stage-2_panel clock-stage-3_panel"
+STAGE_LIST="stage0 stage1 stage2 clock-stage"
 TIMEZONE_DEFAULT=UTC
