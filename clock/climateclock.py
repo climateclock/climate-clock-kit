@@ -1,111 +1,118 @@
 #!/usr/bin/env python3
 
-import json
+import math
 import os
 import sys
 import time
 from datetime import datetime, timezone
 
 import config
-import requests
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
-
-TIME_COLOR = '#FF3115'     #Red is #FF3115, Yellow was '#ffd919'
-TIME_ALT_COLOR = '#890F02' # Red is alt is #890F02, Yellow alt was '#c8890a'
-BUDGET_COLOR = '#0FD87D' #Green is 0FD87D Purple was #9900E6
-BUDGET_ALT_COLOR = '#107D46' #Green alt:107D46 purple alt was: 671497
+# Pulled from dateutil without all the dependencies
+from relativedelta import relativedelta
 
 
-# TODO: Pull these from the network
-JSON = 'https://raw.githubusercontent.com/beautifultrouble/climate-clock-widget/master/src/clock.json'
 SECONDS_PER_YEAR = 365.25 * 24 * 3600
-START_DATE = datetime(2018, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-START_EMISSIONS_BUDGET = 4.2e11
-START_EMISSIONS_YEARLY = 4.2e10
+
+# Snapshot of API data (the Good Stuff™)
+CARBON_DEADLINE_1 = datetime.fromisoformat("2028-01-01T12:00:00+00:00")
+RENEWABLES_1 = {
+    "initial": 26.2,
+    "timestamp": datetime.fromisoformat("2019-01-01T00:00:00+00:00"),
+    "rate": 2.8368383376368776e-8,
+}
 
 
 relpath = lambda filename: os.path.join(sys.path[0], filename)
-hex2color = lambda x: graphics.Color(int(x[-6:-4], 16), int(x[-4:-2], 16), int(x[-2:], 16))
+hex2color = lambda x: graphics.Color(
+    int(x[-6:-4], 16), int(x[-4:-2], 16), int(x[-2:], 16)
+)
 
 
-def time_and_budget():
-    '''
-    Return the time (in seconds) until the carbon budget is spent, and the
-    remaining carbon budget (in tons).
-    '''
-    now = datetime.now(timezone.utc)
-    emissions_per_second = START_EMISSIONS_YEARLY / SECONDS_PER_YEAR
-    emissions_budget_spent = ((now - START_DATE).total_seconds() * emissions_per_second)
-    emissions_budget = START_EMISSIONS_BUDGET - emissions_budget_spent
-    time_remaining = emissions_budget / emissions_per_second
-    
-    return time_remaining, emissions_budget
+def carbon_deadline_1():
+    return relativedelta(CARBON_DEADLINE_1, datetime.now(timezone.utc))
+
+
+def renewables_1():
+    t = (datetime.now(timezone.utc) - RENEWABLES_1["timestamp"]).total_seconds()
+    return RENEWABLES_1["rate"] * t + RENEWABLES_1["initial"]
 
 
 def run(options):
     matrix = RGBMatrix(options=options)
     canvas = matrix.CreateFrameCanvas()
 
-    font_file = ['5x8.bdf', '6x13B.bdf', '9x18B.bdf'][options.chain_length - 1]
-    font = graphics.Font()
-    font.LoadFont(relpath(font_file))
+    f1 = graphics.Font()
+    f1.LoadFont(relpath("10x20.bdf"))
+    f2 = graphics.Font()
+    f2.LoadFont(relpath("6x13.bdf"))
+    f3 = graphics.Font()
+    f3.LoadFont(relpath("8x13.bdf"))
+    L1 = 15
+    L2 = 30
 
-    t_color = hex2color(TIME_COLOR)
-    ta_color = hex2color(TIME_ALT_COLOR)
-    b_color = hex2color(BUDGET_COLOR)
-    ba_color = hex2color(BUDGET_ALT_COLOR)
+    red = hex2color("#ff0000")
+    green = hex2color("#00ff00")
 
-    while not time.sleep(.1):
-        time_remaining, emissions_budget = time_and_budget()
-
-        years, r = divmod(time_remaining, SECONDS_PER_YEAR)
-        days, r = divmod(r, 24 * 3600)
-        hours, r = divmod(r, 3600)
-        minutes, seconds = divmod(r, 60)
-
+    while not time.sleep(0.05):
         canvas.Clear()
 
-        t_strings = [
-            f"{years:1.0f}",
-            f"{'YR' if years == 1 else 'YRS'}",
-            f"{days:3.0f}",
-            f"{'DAY' if days == 1 else 'DAYS'}",
-            f"{hours:02.0f}:{minutes:02.0f}:{seconds:02.0f}",
-        ]
-        b_strings = [
-            f"{int(emissions_budget):,}"[:12],
-            f"{int(emissions_budget):,}"[12:],
-            f"TONS",
+        # Deadline
+        now = datetime.now(timezone.utc)
+
+        # Use relativedelta for leap-year awareness
+        deadline_delta = relativedelta(CARBON_DEADLINE_1, now)
+        years = deadline_delta.years
+        # Extract concrete days from the months & days provided by relativedelta
+        # @rubberduck: 1. Create a relativedelta object rdays containing Δ months & days
+        #              2. Create a concrete time object rdays in the future
+        #              3. Create a timedelta object representing that value - now
+        #              4. Extract its days
+        rdays = relativedelta(months=deadline_delta.months, days=deadline_delta.days)
+        days = ((rdays + now) - now).days
+        hours = deadline_delta.hours
+        minutes = deadline_delta.minutes
+        seconds = deadline_delta.seconds
+        cs = deadline_delta.microseconds // 10000
+
+        deadline = [
+            [f1, red, 1, f"{years:1.0f}"],
+            [f3, red, 1, "YEAR " if years == 1 else "YEARS"],
+            [f1, red, 1, f"{days:03.0f}"],
+            [f3, red, 1, "DAY " if days == 1 else "DAYS"],
+            [f1, red, -2, f"{hours:02.0f}"],
+            [f1, red, -1, (":", " ")[cs < 50]],
+            [f1, red, -2, f"{minutes:02.0f}"],
+            [f1, red, -1, (":", " ")[cs < 50]],
+            [f1, red, 0, f"{seconds:02.0f}"],
         ]
 
-        # Place text fragments according to number of screens
-        t_colors = [t_color, ta_color, t_color, ta_color, t_color]
-        b_colors = [b_color, b_color, ba_color]
-        if options.chain_length == 3:
-            t_pos = (2, 14), (16, 14), (47, 14), (78, 14), (118, 14)
-            b_pos = (2, 28), (111, 28), (145, 28)
-        elif options.chain_length == 2:
-            t_pos = (2, 14), (10, 14), (31, 14), (51, 14), (78, 14)
-            b_pos = (2, 28), (74, 28), (96, 28)
-        elif options.chain_length == 1:
-            t_pos = (3, 7), (9, 7), (26, 7), (42, 7), (3, 15), (42, 15)
-            t_strings.append(f".{int(seconds%1*1000):03d}")
-            t_colors.append(t_color) 
-            b_pos = (3, 23), (3, 31), (22, 31)
-            b_strings[2] = "TONS CO₂"
+        x = 1
+        for font, color, space, string in deadline:
+            x += space + graphics.DrawText(canvas, font, x, L1, color, string)
 
-        for pos, strings, colors in ((t_pos, t_strings, t_colors), (b_pos, b_strings, b_colors)):
-            for (x, y), s, c in zip(pos, strings, colors):
-                graphics.DrawText(canvas, font, x, y, c, s)
+        # Lifeline
+        r1 = renewables_1()
+        lifeline = [
+            [f1, green, -2, f"{r1:.0f}"],
+            [f1, green, -2, f"."],
+            [f1, green, 3, f"{format(r1, '.9f').split('.')[1]}%"],
+            [f2, green, 0, "RENEWABLES"],
+        ]
+
+        x = 1
+        for font, color, space, string in lifeline:
+            x += space + graphics.DrawText(canvas, font, x, L2, color, string)
 
         canvas = matrix.SwapOnVSync(canvas)
 
 
 options = RGBMatrixOptions()
 for key, value in vars(config).items():
-    if not key.startswith('__'):
+    if not key.startswith("__"):
         setattr(options, key, value)
 
-run(options)
 
+if __name__ == "__main__":
+    run(options)
