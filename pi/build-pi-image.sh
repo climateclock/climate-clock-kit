@@ -23,7 +23,7 @@ git clean -fdx
 
 
 # Add config, build stage, and remove stage2 (raspbian-lite) image generation
-cp -a ../{config,clock-stage-{1,2,3}_panel} .
+cp -a ../{config,clock-stage} .
 rm stage2/EXPORT_{IMAGE,NOOBS} 2>/dev/null
 
 
