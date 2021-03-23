@@ -44,8 +44,7 @@ async def main() -> [str, int]:
         asyncio.create_task(provide_clock_modules(http, modules))
         asyncio.create_task(update_clock(options, quit))
         await quit
-    
+
 
 if __name__ == '__main__':
     asyncio.run(main())
-
