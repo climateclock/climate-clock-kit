@@ -5,7 +5,7 @@
 printf "\n# Faster booting when network isn't present\ntimeout 5\n" >>"${ROOTFS_DIR}/etc/dhcpcd.conf"
 
 
-# Produce a systemd service and enable it for the multi-user target
+# Produce a systemd service and enable it for the basic target
 echo "Adding climateclock systemd service..."
 cat >"${ROOTFS_DIR}/lib/systemd/system/climateclock.service" <<EOF
 [Unit]
@@ -14,14 +14,15 @@ Description=ClimateClock
 [Service]
 Type=simple
 Restart=always
-RestartSec=2s
+RestartSec=1s
 ExecStart=/home/${FIRST_USER_NAME}/clock/climateclock.py
 WorkingDirectory=/home/${FIRST_USER_NAME}/clock
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=basic.target
 EOF
-ln -fsv /lib/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/multi-user.target.wants/climateclock.service"
+mkdir -p "${ROOTFS_DIR}/etc/systemd/system/basic.target.wants"
+ln -fsv /lib/systemd/system/climateclock.service "${ROOTFS_DIR}/etc/systemd/system/basic.target.wants/climateclock.service"
 
 
 # Produce a build script for rpi-rgb-led-matrix
