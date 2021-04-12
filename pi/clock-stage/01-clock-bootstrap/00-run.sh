@@ -87,6 +87,10 @@ on_chroot << EOF
     reconfig /boot/config.txt "^.*dtoverlay=i2c-rtc.*$" "dtoverlay=i2c-rtc,ds1307"
     # Disable sound ('easy way' -- kernel module not blacklisted)
     reconfig /boot/config.txt "^.*dtparam=audio.*$" "dtparam=audio=off"
+
+    # Give climate user sudo access once they've logged in
+    sed -i 's|^pi|climate|' /etc/sudoers.d/010_pi-nopasswd
+    mv /etc/sudoers.d/010_{pi,climate}-nopasswd
 EOF
 
 
