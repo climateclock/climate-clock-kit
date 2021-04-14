@@ -36,9 +36,12 @@ sed -i '/-x.*fake-hwclock/,+2d' export-image/04-finalise/01-run.sh
 sed -i 's|FROM debian|FROM i386/debian|' Dockerfile
 
 
-# Build or resume partial build
-read -p "Keep docker container after build (requires manual clean-up)? [y/N]: " KEEP
-[ "$KEEP" = "y" ] && CLEAN=1 || CLEAN=0
-CONTINUE=1 PRESERVE_CONTAINER=$CLEAN ./build-docker.sh
-echo "If your image was built successfully, it will be in ${PWD}/deploy."
+read -p "Continue previous build (if one exists)? [y/N]: " CONTINUE
+[ "$CONTINUE" = "y" ] && CONTINUE=1 || CONTINUE=0
+read -p "Keep docker container after build (requires manual clean-up)? [y/N]: " PRESERVE_CONTAINER
+[ "$PRESERVE_CONTAINER" = "y" ] && PRESERVE_CONTAINER=1 || PRESERVE_CONTAINER=0
+
+
+CONTINUE=$CONTINUE PRESERVE_CONTAINER=$PRESERVE_CONTAINER ./build-docker.sh
+echo "Result: $?. If your image was built successfully, it will be in ${PWD}/deploy."
 
