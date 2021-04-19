@@ -91,19 +91,16 @@ on_chroot << 'EOF'
     reconfig /etc/modules "^i2c-dev$" "i2c-dev" || true
     reconfig /boot/config.txt "^dtparam=i2c_arm$" "dtparam=i2c_arm" || true
 
-    echo "..."
-
-    # Comment out line which causes hwclock-set to exit when systemd is running
-    sed -i '/if \[ -e \/run\/systemd\/system \] ; then/,+2 s/^#*/#/' /lib/udev/hwclock-set || true
-
-    echo "..."
+    # Fix hwclock-set
+    sed -i '/systemd/,+2 s/^/#/' hwclock-set
+    reconfig /lib/udev/hwclock-set "\/.*systz" "#\1" || true
 
     # Do additional RTC setup for DS1307
     reconfig /boot/config.txt "^.*dtoverlay=i2c-rtc.*$" "dtoverlay=i2c-rtc,ds1307" || true
+
     # Disable sound ('easy way' -- kernel module not blacklisted)
     reconfig /boot/config.txt "^.*dtparam=audio.*$" "dtparam=audio=off" || true
 
     echo "Done"
 EOF
-
 
