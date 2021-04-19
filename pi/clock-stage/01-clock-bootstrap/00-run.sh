@@ -92,8 +92,8 @@ on_chroot << 'EOF'
     reconfig /boot/config.txt "^dtparam=i2c_arm$" "dtparam=i2c_arm" || true
 
     # Fix hwclock-set
-    sed -i '/systemd/,+2 s/^/#/' hwclock-set
-    reconfig /lib/udev/hwclock-set "\/.*systz" "#\1" || true
+    sed -i '/systemd/,+2 s|^|#|' /lib/udev/hwclock-set
+    sed -i '/systz/ s|^|#|' /lib/udev/hwclock-set
 
     # Do additional RTC setup for DS1307
     reconfig /boot/config.txt "^.*dtoverlay=i2c-rtc.*$" "dtoverlay=i2c-rtc,ds1307" || true
