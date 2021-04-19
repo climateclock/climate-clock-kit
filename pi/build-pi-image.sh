@@ -4,12 +4,10 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
-# Get a password
-if ! grep -q "^\s*FIRST_USER_PASS=.\+" config; then
-    echo -en "Enter a linux password for the system build built."\
-             "\nDO NOT use any characters with special significance in bash syntax: "
-    read PASSWORD
-    echo "FIRST_USER_PASS='${PASSWORD}'" >>config
+# Make sure we have a password
+if ! grep -q "FIRST_USER_PASS=.\+" config; then
+    echo -e "\n#Enter a password\nFIRST_USER_PASS=" >>config
+    $EDITOR config
 fi
 
 
@@ -32,16 +30,13 @@ sed -i 's/fake-hwclock\s//' stage2/01-sys-tweaks/00-packages
 sed -i '/-x.*fake-hwclock/,+2d' export-image/04-finalise/01-run.sh
 
 
-# Workaround for 64-bit hosts https://github.com/RPi-Distro/pi-gen/issues/271
-sed -i 's|FROM debian|FROM i386/debian|' Dockerfile
-
-
+# Keep / resume partial builds?
 read -p "Continue previous build (if one exists)? [y/N]: " CONTINUE
 [ "$CONTINUE" = "y" ] && CONTINUE=1 || CONTINUE=0
 read -p "Keep docker container after build (requires manual clean-up)? [y/N]: " PRESERVE_CONTAINER
 [ "$PRESERVE_CONTAINER" = "y" ] && PRESERVE_CONTAINER=1 || PRESERVE_CONTAINER=0
-
-
 CONTINUE=$CONTINUE PRESERVE_CONTAINER=$PRESERVE_CONTAINER ./build-docker.sh
+
+
 echo "Result: $?. If your image was built successfully, it will be in ${PWD}/deploy."
 
