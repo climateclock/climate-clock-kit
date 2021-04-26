@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import math
 import os
 import sys
 import time
@@ -18,9 +17,9 @@ SECONDS_PER_YEAR = 365.25 * 24 * 3600
 # Snapshot of API data (the Good Stuff™)
 CARBON_DEADLINE_1 = datetime.fromisoformat("2028-01-01T12:00:00+00:00")
 RENEWABLES_1 = {
-    "initial": 26.2,
-    "timestamp": datetime.fromisoformat("2019-01-01T00:00:00+00:00"),
-    "rate": 2.8368383376368776e-8,
+    "initial": 11.4,
+    "timestamp": datetime.fromisoformat("2020-01-01T00:00:00+00:00"),
+    "rate": 2.0428359571070087e-08,
 }
 
 
