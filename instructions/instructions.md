@@ -125,7 +125,7 @@
     
     * [Memory card image for CLIMATECLOCK w/1 64x32 RGB matrix panel](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-1_panel.img)
     * [Memory card image for CLIMATECLOCK w/2 64x32 RGB matrix panels](https://climateclock.world/2019-12-05-CLIMATECLOCK-v0.0.1-2_panel.img)
-    * [Memory card image for CLIMATECLOCK w/3 64x32 RGB matrix panels](https://climateclock.world/2021-03-22-CLIMATECLOCK-v0.1.0.img) (Updated March 2021!)
+    * [Memory card image for CLIMATECLOCK w/3 64x32 RGB matrix panels](https://climateclock.world/2021-04-18-CLIMATECLOCK-v0.1.5.img) (Updated April 2021)
     
   The three files are nearly identical and each of them can be adjusted to work like the others by changing one number in a [config file](https://github.com/BeautifulTrouble/climate-clock-kit/blob/master/clock/config.py) on the memory card (`/home/clock/climate-clock-kit/clock/config.py`).
 
